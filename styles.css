@@ -50,7 +50,7 @@ textarea {
   top: 0;
   z-index: 50;
   display: grid;
-  grid-template-columns: auto auto 1fr auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 14px;
   min-height: 64px;
@@ -134,18 +134,30 @@ textarea {
 }
 
 .account-box {
-  display: grid;
-  gap: 2px;
-  min-width: 215px;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 280px;
+  padding: 4px 6px 4px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .account-box label {
-  color: rgba(255, 255, 255, 0.62);
+  flex: 0 0 auto;
+  color: rgba(255, 255, 255, 0.72);
   font-size: 0.68rem;
+  font-weight: 900;
+  white-space: nowrap;
 }
 
 .account-box select {
-  min-height: 34px;
+  width: 190px;
+  min-width: 0;
+  min-height: 32px;
   border: 1px solid rgba(255, 255, 255, 0.24);
   border-radius: 6px;
   background: #fff;
@@ -593,6 +605,139 @@ tr:last-child td {
   resize: vertical;
 }
 
+.song-hero {
+  position: relative;
+  overflow: hidden;
+  border: 0;
+  background:
+    linear-gradient(135deg, rgba(28, 43, 70, 0.96), rgba(44, 64, 104, 0.9)),
+    radial-gradient(circle at 82% 18%, rgba(176, 141, 87, 0.35), transparent 32%);
+  color: #fff;
+}
+
+.song-hero::after {
+  content: "♪";
+  position: absolute;
+  right: 34px;
+  bottom: -42px;
+  color: rgba(255, 255, 255, 0.12);
+  font-size: 13rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.song-hero .card-body {
+  position: relative;
+  z-index: 1;
+}
+
+.song-title {
+  margin: 4px 0 8px;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1.08;
+}
+
+.song-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.meta-box {
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.meta-box span {
+  display: block;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.song-sheet-grid,
+.cheer-gallery,
+.admin-form-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.song-sheet-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.mock-sheet,
+.mock-photo,
+.mock-video {
+  display: grid;
+  place-items: center;
+  min-height: 180px;
+  border: 1px dashed var(--sf-border-strong);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(176, 141, 87, 0.1), transparent 45%),
+    #fbfcfe;
+  color: var(--sf-muted);
+  text-align: center;
+  font-weight: 900;
+}
+
+.mock-sheet strong,
+.mock-photo strong,
+.mock-video strong {
+  display: block;
+  color: var(--sf-text);
+  font-size: 1.05rem;
+}
+
+.mock-video {
+  min-height: 140px;
+  background:
+    linear-gradient(135deg, rgba(35, 98, 168, 0.1), transparent 48%),
+    #f8fafc;
+}
+
+.cheer-gallery {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.cheer-call {
+  white-space: pre-line;
+  padding: 14px;
+  border-radius: 8px;
+  background: var(--sf-accent-soft);
+  font-weight: 900;
+}
+
+.admin-form-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.management-row {
+  display: grid;
+  grid-template-columns: 1.1fr 0.8fr 0.6fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--sf-border);
+}
+
+.management-row:last-child {
+  border-bottom: 0;
+}
+
+.color-dot {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  vertical-align: middle;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
 .check-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -773,12 +918,16 @@ tr:last-child td {
   }
 
   .account-box {
-    grid-column: 1 / -1;
-    width: 100%;
+    grid-column: auto;
+    justify-self: end;
+    width: auto;
+    max-width: 260px;
   }
 
   .grid.two,
   .grid.admin,
+  .song-sheet-grid,
+  .admin-form-grid,
   .login-grid {
     grid-template-columns: 1fr;
   }
@@ -801,6 +950,18 @@ tr:last-child td {
     font-size: 0.92rem;
   }
 
+  .account-box {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+    width: 100%;
+    max-width: none;
+  }
+
+  .account-box select {
+    flex: 1 1 auto;
+    width: auto;
+  }
+
   .hero {
     grid-template-columns: 1fr;
     padding: 24px 20px;
@@ -809,8 +970,15 @@ tr:last-child td {
   .grid.three,
   .grid.four,
   .form-grid,
+  .song-meta,
+  .cheer-gallery,
   .check-grid {
     grid-template-columns: 1fr;
+  }
+
+  .management-row {
+    grid-template-columns: 1fr;
+    align-items: start;
   }
 
   .page-head {

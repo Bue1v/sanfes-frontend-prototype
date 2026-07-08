@@ -131,7 +131,9 @@ const teams = {
     entrance: "正門側入口",
     cheerSeat: "Aブロック",
     call: "燃えろ赤団",
-    note: "移動時は係員の案内に従ってください。"
+    note: "移動時は係員の案内に従ってください。",
+    chant: "赤団、赤団、最後まで走り切れ！\n全員で手拍子を合わせてからコールに入ります。",
+    pose: "狼牙ポーズ: 右手を斜め上、左手を胸元に構える。"
   },
   blue: {
     id: "blue",
@@ -142,7 +144,9 @@ const teams = {
     entrance: "体育館側入口",
     cheerSeat: "Bブロック",
     call: "青く高く",
-    note: "応援席では水分補給をこまめに行ってください。"
+    note: "応援席では水分補給をこまめに行ってください。",
+    chant: "青団ファイト、青団ファイト！\nリレー前は短い掛け声でテンポを合わせます。",
+    pose: "波ポーズ: 両手を横に広げて、隣の人とタイミングを合わせる。"
   },
   yellow: {
     id: "yellow",
@@ -153,7 +157,9 @@ const teams = {
     entrance: "中央通路",
     cheerSeat: "Cブロック",
     call: "光れ黄団",
-    note: "集合時刻の10分前に移動を開始してください。"
+    note: "集合時刻の10分前に移動を開始してください。",
+    chant: "黄団、輝け、最後まで！\n演舞前は列ごとに掛け声を確認します。",
+    pose: "スター型ポーズ: 両手を上に広げて、最後に一拍止める。"
   },
   green: {
     id: "green",
@@ -164,9 +170,18 @@ const teams = {
     entrance: "校舎側入口",
     cheerSeat: "Dブロック",
     call: "つなげ緑団",
-    note: "体調不良時は救護委員へ連絡してください。"
+    note: "体調不良時は救護委員へ連絡してください。",
+    chant: "緑団、つなげ、声をひとつに！\n長めの競技では座席から拍手で応援します。",
+    pose: "リーフポーズ: 腕で葉の形を作り、左右に小さく揺らす。"
   }
 };
+
+const classGroups = [
+  { name: "IT2A", note: "情報処理科2年A組", members: 4, team: "赤団" },
+  { name: "IT2B", note: "情報処理科2年B組", members: 3, team: "黄団" },
+  { name: "NC1A", note: "看護科1年A組", members: 3, team: "緑団" },
+  { name: "CG1A", note: "デザイン科1年A組", members: 2, team: "青団" }
+];
 
 const competitions = [
   {
@@ -291,6 +306,7 @@ const documents = [
   ["会場マップ", "グラウンド・体育館・本部の位置", "MAP"],
   ["持ち物一覧", "競技別に必要な持ち物", "FORM"],
   ["けが防止ガイド", "準備運動と体調管理", "GUIDE"],
+  ["フィナーレソング資料", "歌詞カードと練習用パート確認", "SONG"],
   ["HELP参加ルール", "HELP参加時の注意事項", "RULES"]
 ];
 
@@ -479,9 +495,10 @@ function renderHome() {
           </div>
         </div>
 
-        <div class="grid three">
+        <div class="grid four">
           ${quickCard("競技ガイド", "competitions", "ルール・集合情報")}
           ${quickCard("資料", "documents", "マップ・様式")}
+          ${quickCard("フィナーレソング", "song", "歌詞・練習")}
           ${quickCard("HELP募集", "help", "参加・キャンセル")}
         </div>
       </div>
@@ -699,6 +716,52 @@ function renderDocuments() {
           </div>
         </article>
       `).join("")}
+    </section>
+  `);
+}
+
+function renderSong() {
+  layout(`
+    ${pageTitle("フィナーレソング", "閉会式・結果発表後に全員で歌う曲と、練習用資料を確認できます。")}
+    <section class="card song-hero" style="margin-bottom:18px">
+      <div class="card-body">
+        <div class="hero-kicker">FINALE SONG</div>
+        <h2 class="song-title">ひまわりの約束</h2>
+        <p>本番前に歌詞カード、パート別確認、譜面プレビューの位置を確認できる画面です。</p>
+        <div class="song-meta">
+          <div class="meta-box"><span>曲名</span><strong>ひまわりの約束</strong></div>
+          <div class="meta-box"><span>歌うタイミング</span><strong>閉会式・結果発表後</strong></div>
+          <div class="meta-box"><span>対象</span><strong>参加者全員</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid two">
+      <div class="card">
+        <div class="card-header">
+          <span>歌詞カード・練習資料</span>
+          <button class="btn ghost small" data-action="mock-download">PDFを開く</button>
+        </div>
+        <div class="card-body">
+          <p class="muted">本番用資料は実システム側で管理します。この prototype では資料カードの配置と遷移だけ確認できます。</p>
+          <div class="song-sheet-grid">
+            <div class="mock-sheet"><div><strong>歌詞カード</strong><span>ふりがな付き</span></div></div>
+            <div class="mock-sheet"><div><strong>前半パート</strong><span>練習用プレビュー</span></div></div>
+            <div class="mock-sheet"><div><strong>後半パート</strong><span>練習用プレビュー</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card accent">
+        <div class="card-header">当日までの確認</div>
+        <div class="card-body">
+          <div class="list">
+            <div class="list-item"><div class="item-main"><div class="item-title">全員で曲名を確認</div><div class="item-sub">閉会式の流れの中で案内を表示します。</div></div>${badge("公開中", "green")}</div>
+            <div class="list-item"><div class="item-main"><div class="item-title">練習資料の配布</div><div class="item-sub">歌詞カード・譜面・パート別画像の導線をまとめます。</div></div>${badge("資料", "dark")}</div>
+            <div class="list-item"><div class="item-main"><div class="item-title">本番前リマインド</div><div class="item-sub">お知らせと通知から同じ情報へ移動できます。</div></div>${badge("REMIND", "blue")}</div>
+          </div>
+        </div>
+      </div>
     </section>
   `);
 }
@@ -1168,7 +1231,63 @@ function adminDashboard() {
   `;
 }
 
+function adminTeamsPage() {
+  const teamRows = Object.values(teams).map((team) => `
+    <div class="management-row">
+      <div>${teamBadge(team)} <span class="muted small">${escapeHtml(team.venue)} / ${escapeHtml(team.cheerSeat)}</span></div>
+      <div><span class="color-dot" style="background:${team.color}"></span> <code>${team.color}</code></div>
+      <strong>${team.score} 点</strong>
+      <div class="button-row">${button("応援情報", `team/${team.id}`, "ghost small")}<button class="btn ghost small" data-action="save">更新</button></div>
+    </div>
+  `).join("");
+  const classRows = classGroups.map((group) => `
+    <div class="management-row">
+      <strong>${escapeHtml(group.name)}</strong>
+      <span>${escapeHtml(group.note)}</span>
+      <span>${escapeHtml(group.team)} / ${group.members}名</span>
+      <button class="btn ghost small" data-action="save">編集</button>
+    </div>
+  `).join("");
+  return `
+    ${pageTitle("団・クラス管理", "団の基本情報、応援情報、クラスをまとめて管理します。", `<button class="btn accent" data-action="save">団を追加</button>`)}
+    <section class="grid two">
+      <div class="card">
+        <div class="card-header">団一覧</div>
+        <div>${teamRows}</div>
+      </div>
+      <div class="card">
+        <div class="card-header">クラス一覧</div>
+        <div>${classRows}</div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:18px">
+      <div class="card-header">
+        <span>団情報・応援情報の編集例</span>
+        ${badge("赤団", "red")}
+      </div>
+      <div class="card-body">
+        <div class="admin-form-grid">
+          <div class="field"><label>団名</label><input value="赤団"></div>
+          <div class="field"><label>団カラー</label><input type="color" value="#d33b32"></div>
+          <div class="field"><label>スコア</label><input type="number" value="150"></div>
+          <div class="field"><label>会場内の場所</label><input value="グラウンド東側"></div>
+          <div class="field"><label>入口</label><input value="正門側入口"></div>
+          <div class="field"><label>応援席</label><input value="Aブロック"></div>
+          <div class="field full"><label>応援コール</label><input value="燃えろ赤団"></div>
+          <div class="field full"><label>応援時の注意事項</label><textarea>移動時は係員の案内に従ってください。</textarea></div>
+        </div>
+        <div class="button-row" style="margin-top:14px">
+          <button class="btn primary" data-action="save">保存</button>
+          ${button("公開ページを確認", "team/red", "ghost")}
+        </div>
+      </div>
+    </section>
+  `;
+}
+
 function adminList(section) {
+  if (section === "teams") return adminTeamsPage();
   const map = {
     students: ["学生・クラス管理", ["学籍番号", "氏名", "クラス", "団", "委員"], [
       ["S001", "山田太郎", "IT2A", "赤団", "集計委員"],
@@ -1202,24 +1321,42 @@ function adminList(section) {
 function renderTeamDetail(id = "red") {
   const team = teams[id] || teams.red;
   layout(`
-    ${pageTitle(team.name, "団の場所、応援情報、現在スコアを確認できます。", button("ホームへ戻る", "home", "ghost"))}
+    ${pageTitle(team.name, "団の場所、応援コール、ポーズ、現在スコアを確認できます。", button("ホームへ戻る", "home", "ghost"))}
     <section class="grid two">
       <div class="card accent">
         <div class="card-body">
           <div style="display:flex;align-items:center;gap:14px">${teamBadge(team)}<div class="stat-value">${team.score} 点</div></div>
           <div style="margin-top:16px" class="progress"><span style="width:${team.score / 2.2}%;background:${team.color}"></span></div>
+          <p class="muted" style="margin-bottom:0;margin-top:14px">団カラー <code>${team.color}</code></p>
         </div>
       </div>
       <div class="card">
-        <div class="card-header">応援情報</div>
+        <div class="card-header">会場・応援席</div>
         <div class="card-body">
           <table><tbody>
             <tr><th>場所</th><td>${escapeHtml(team.venue)}</td></tr>
             <tr><th>入口</th><td>${escapeHtml(team.entrance)}</td></tr>
             <tr><th>応援席</th><td>${escapeHtml(team.cheerSeat)}</td></tr>
-            <tr><th>応援コール</th><td>${escapeHtml(team.call)}</td></tr>
             <tr><th>注意事項</th><td>${escapeHtml(team.note)}</td></tr>
           </tbody></table>
+        </div>
+      </div>
+    </section>
+    <section class="grid two" style="margin-top:18px">
+      <div class="card">
+        <div class="card-header">応援コール・チャント</div>
+        <div class="card-body">
+          <div class="cheer-call">${escapeHtml(team.call)}\n${escapeHtml(team.chant)}</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">ポーズ・練習動画</div>
+        <div class="card-body">
+          <div class="cheer-gallery">
+            <div class="mock-photo"><div><strong>ポーズ写真 1</strong><span>${escapeHtml(team.pose)}</span></div></div>
+            <div class="mock-photo"><div><strong>ポーズ写真 2</strong><span>当日の立ち位置と手の向きを確認</span></div></div>
+          </div>
+          <div class="mock-video" style="margin-top:14px"><div><strong>演舞練習動画</strong><span>実システムでは動画資料を表示</span></div></div>
         </div>
       </div>
     </section>
@@ -1236,6 +1373,7 @@ function render() {
   else if (page === "competition") renderCompetitionDetail();
   else if (page === "announcements") renderAnnouncements();
   else if (page === "documents") renderDocuments();
+  else if (page === "song") renderSong();
   else if (page === "help") renderHelp();
   else if (page === "my") renderMyPage();
   else if (page === "committee") renderCommitteePreference();
